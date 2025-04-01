@@ -6,9 +6,9 @@ This pipeline is designed for analyzing LINE-1 RNA-Seq data using a stringent al
 
 ### Steps
 
-Quality Control: Uses FastQC and Trimmomatic for read quality assessment and preprocessing.
+Quality Control: Uses fastqc and fastp for read quality assessment and preprocessing.
 
-Alignment: Bowtie1 with unique alignment settings to stringently map reads to LINE-1 sequences.
+Alignment: Bowtie1 with unique alignment settings to stringently map reads to reference genome.
 
 Post-Alignment Processing: Includes samtools for sorting, filtering, and indexing.
 
@@ -34,6 +34,7 @@ git clone https://github.com/minh0620tran/L1-RNA-Seq-pipeline.git
 cd L1-RNA-Seq-pipeline
 conda env create -f L1_rnaseq_pipeline.yml
 conda activate L1_rnaseq_pipeline
+```
 
 ## Computational requirements
 Due to the computationally intensive nature of Bowtie1 alignment for repetitive elements and the substantial memory requirements for processing LINE-1 sequences, this pipeline is optimized for execution on High-Performance Computing (HPC) clusters.
@@ -49,6 +50,7 @@ For typical RNA-Seq datasets, we recommend the following SLURM parameters:
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=12
 #SBATCH --mem=128000
+```
 
 These specifications allocate:
 - 128GB of RAM
@@ -64,6 +66,7 @@ Before running L1-RNASeq-pipeline, you will need the hg38 reference genome in fa
 wget http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
 zcat hg38.fa.gz > hg38.fa
 bowtie-build hg38.fa hg38
+```
 
 To execute the script: 
 ```for i in *_1.fastq *_1.fq; do sample=$(basename $i | sed 's/_1.*//'); sbatch --job-name=$sample L1_RNASeq.sh $i; done```
